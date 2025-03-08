@@ -4,16 +4,18 @@ import { connectDB } from "./db/connectDB.js";
 
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.route.js";
+import messageRoutes from "./routes/message.route.js";
 
 const app = express();
 const PORT = process.env.PORT|| 5000;
 
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
-// Use middleware to parse JSON
-app.use(express.json()); // Corrected to use parentheses
+// Using middleware to parse JSON
+app.use(express.json()); // Correct to use parentheses
 app.use(cookieParser());
-app.use("/api/auth", authRoutes); // Un-comment this if you want to use auth routes
+app.use("/api/auth", authRoutes); 
+app.use("/api/message", messageRoutes); 
 
 app.get('/', (req, res) => {
     res.status(200).send("Welcome to root URL of Server");

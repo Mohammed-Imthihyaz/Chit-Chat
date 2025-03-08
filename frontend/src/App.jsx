@@ -10,6 +10,12 @@ import LoginPage from "././AuthPages/LoginPage.jsx";
 import ResetPassword from "././AuthPages/ResetPassword.jsx";
 import SignUpPage from "././AuthPages/SignUpPage.jsx";
 import Home from "./HomePage/Home";
+import Navbar from "./pages/NavBar";
+import ProfilePage from "./pages/ProfilePage";
+import SettingsPage from "./pages/SettingsPage";
+
+
+
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, user, isCheckingAuth } = useAuthStore();
@@ -45,12 +51,30 @@ function App() {
 
   return (
     <>
+    <div >
+     <Navbar />
       <Routes>
         <Route
           path="/"
           element={
             <ProtectedRoute>
               <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <ProfilePage/>
+            </ProtectedRoute>
+          }
+        />
+          <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <SettingsPage />
             </ProtectedRoute>
           }
         />
@@ -89,6 +113,7 @@ function App() {
         />
       </Routes>
       <Toaster />
+      </div>
     </>
   );
 }
