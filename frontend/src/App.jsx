@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router";
 import { Navigate } from "react-router-dom";
 import LoadingSpinner from "../components/LodingSipnner";
 import { useAuthStore } from "../store/authStore";
+import { useThemeStore } from "../store/useThemeStore";
 import EmailVerification from '././AuthPages/EmailVerification.jsx';
 import ForgetPassword from "././AuthPages/ForgetPassword.jsx";
 import LoginPage from "././AuthPages/LoginPage.jsx";
@@ -19,7 +20,6 @@ import SettingsPage from "./pages/SettingsPage";
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, user, isCheckingAuth } = useAuthStore();
-
   if (isCheckingAuth) {
     return <LoadingSpinner />;
   }
@@ -43,6 +43,7 @@ const RedirectAuthenticatedUser = ({ children }) => {
 
 function App() {
   const { isCheckingAuth, checkAuth } = useAuthStore();
+  const { theme } = useThemeStore();
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
@@ -51,7 +52,7 @@ function App() {
 
   return (
     <>
-    <div >
+    <div data-theme={theme}>
      <Navbar />
       <Routes>
         <Route
