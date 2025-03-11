@@ -1,3 +1,5 @@
+import cloudinary from "../lib/cloudinary.js";
+import { getReceiverSocketId,io } from "../lib/socket.js";
 import Message from "../models/message.model.js";
 import { User } from "../models/user.model.js";
 
@@ -34,21 +36,25 @@ export const sendMessage=async(req,res)=>{
     try {
         const {text,image}=req.body;
         const {id}=req.params;
-        const myId =req.userId;
+        const myId =req.userId ;
         let imageUrl;
         if (image) {
-            // Upload base64 image to cloudinary
             const uploadResponse = await cloudinary.uploader.upload(image);
             imageUrl = uploadResponse.secure_url;
           }
           const newMessage=new Message({
-            myId,
-            id,
+            senderId: myId,
+            receiverId:id,
             text,
             image:imageUrl,
           })
           await newMessage.save();
-          //todo:socket-implementation
+          //socket-implementation
+          const receiverSocketId=getReceiverSocketId(id);
+          if(receiverSocketId){
+            io.to(receiverSocketId).emit("newMessage",newMessage);
+            //only sending the messg to the reiver not to all emit sends to all bro
+          }
           res.status(201).json(newMessage);
     } catch (error) {
         console.error("Error in getUsersForSidebar: ", error.message);

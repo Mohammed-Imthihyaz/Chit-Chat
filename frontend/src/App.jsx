@@ -42,8 +42,9 @@ const RedirectAuthenticatedUser = ({ children }) => {
 };
 
 function App() {
-  const { isCheckingAuth, checkAuth } = useAuthStore();
+  const { isCheckingAuth, checkAuth,onlineUsers } = useAuthStore();
   const { theme } = useThemeStore();
+  console.log(onlineUsers);
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
